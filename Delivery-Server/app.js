@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
+const port = process.env.PORT || 3000;
 
 //Database
 mongoose
@@ -30,5 +31,7 @@ app.post("/packages", PackageController.create);
 app.get("/packages", PackageController.retrive);
 app.delete("/packages", PackageController.delete);
 
+app.post("/best-delivery", PackageController.retriveBestDelivery);
+
 //Start Server
-app.listen(3000, () => console.log("Server started at 3000"));
+app.listen(port, () => console.log("Server started at 3000"));

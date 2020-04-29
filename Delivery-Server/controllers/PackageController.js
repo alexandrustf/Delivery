@@ -35,4 +35,32 @@ module.exports = {
       })
       .catch((err) => res.json({ success: false, result: err }));
   },
+
+  retriveBestDelivery: async (req, res) => {
+    Date.prototype.addHours = function (h) {
+      this.setHours(this.getHours() + h);
+      return this;
+    };
+    var datetime = new Date().toISOString();
+    var query = { date: { $lte: datetime } };
+    var location = req.body;
+
+    try {
+      var deliveries = await PackageModel.find(query);
+
+      var delivery = deliveries.sort((d, g) => {
+        var a = d.sender.lat - location.lat;
+        var b = d.sender.lng - location.lng;
+        var x = Math.sqrt(a * a + b * b);
+        a = g.sender.lat - location.lat;
+        b = g.sender.lng - location.lng;
+        var y = Math.sqrt(a * a + b * b);
+        return x - y;
+      })[0];
+      console.log(delivery);
+      res.json({ success: true, result: delivery });
+    } catch (err) {
+      res.json({ success: false, result: err });
+    }
+  },
 };
