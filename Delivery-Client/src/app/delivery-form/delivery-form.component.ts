@@ -87,6 +87,27 @@ export class DeliveryFormComponent implements OnInit, AfterViewInit {
     }
 
     public confirm(): void {
+        this.http.post(`http://delivery-server.uksouth.azurecontainer.io/packages`, {
+            sender: {
+                lat: this.pickupCoordinates.latitude,
+                lng: this.pickupCoordinates.longitude,
+                phone: this.sender.phoneNumber,
+                firstName: this.sender.firstName,
+                lastName: this.sender.lastName,
+                address: this.sender.address
+            },
+            receiver: {
+                lat: this.deliveryCoordinates.latitude,
+                lng: this.deliveryCoordinates.longitude,
+                phone: this.receiver.phoneNumber,
+                firstName: this.receiver.firstName,
+                lastName: this.receiver.lastName,
+                address: this.receiver.address
+            },
+            date: new Date()
+        }).subscribe(() => {
+            alert('Package request has been sent!');
+        });
     }
 
     private updatePickupCoordinates(address: string): void {
