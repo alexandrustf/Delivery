@@ -7,10 +7,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DeliveryFormComponent } from './delivery-form/delivery-form.component';
 import { FormsModule } from '@angular/forms';
+import { AnotherComponent } from './another.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AnotherComponent,
     DeliveryFormComponent
   ],
   imports: [
