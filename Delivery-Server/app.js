@@ -4,6 +4,25 @@ const app = express();
 const port = process.env.PORT || 3000;
 const cors = require('cors')
 
+const swaggerJSDoc = require('swagger-jsdoc');
+
+const options = {
+  definition: {
+    openapi: '3.0.0', // Specification (optional, defaults to swagger: '2.0')
+    info: {
+      title: 'Hello World', // Title (required)
+      version: '1.0.0', // Version (required)
+    },
+  },
+  // Path to the API docs
+  apis: ['./routes.js'],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+const swaggerUi = require('swagger-ui-express');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 //Database
 mongoose
   .connect(
@@ -25,15 +44,6 @@ mongoose
 app.use(cors())
 app.use(express.json());
 
-//Controllers
-const PackageController = require("./controllers/PackageController");
-
-//Routes
-app.post("/packages", PackageController.create);
-app.get("/packages", PackageController.retrive);
-app.delete("/packages", PackageController.delete);
-
-app.post("/best-delivery", PackageController.retriveBestDelivery);
 
 //Start Server
 app.listen(port, () => console.log("Server started at 3000"));
